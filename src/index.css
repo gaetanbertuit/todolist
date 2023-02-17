@@ -2,16 +2,111 @@
   margin:0;
 }
 
+@import url('https://fonts.googleapis.com/css?family=Exo:400,700');
+@import "~@flaticon/flaticon-uicons/css/all/all";
+
 body {
   margin: 0;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Exo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display:flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center;
+  height:100vh;
+ }
+
+ body {
+  -webkit-animation: theme 21s linear infinite;
+          animation: theme 21s linear infinite;
+}
+body:after, body:before {
+  content: "";
+  display: block;
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  width: 100vmax;
+  height: 100vmax;
+  background: rgba(0, 0, 0, 0.05);
+  -webkit-animation: background 90s linear infinite;
+          animation: background 90s linear infinite;
+}
+body:after {
+  left: 35vw;
+}
+body:before {
+  right: 35vw;
+  -webkit-animation-delay: -30s;
+          animation-delay: -30s;
+  animation-direction: reverse;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@-webkit-keyframes theme {
+  0% {
+    background: #74C390;
+  }
+  16% {
+    background: #5DBDB6;
+  }
+  33% {
+    background: #59D4E1;
+  }
+  50% {
+    background: #51BCE8;
+  }
+  66% {
+    background: #FA5374;
+  }
+  83% {
+    background: #E46653;
+  }
+  100% {
+    background: #74C390;
+  }
+}
+
+@keyframes theme {
+  0% {
+    background: #74C390;
+  }
+  16% {
+    background: #5DBDB6;
+  }
+  33% {
+    background: #59D4E1;
+  }
+  50% {
+    background: #51BCE8;
+  }
+  66% {
+    background: #FA5374;
+  }
+  83% {
+    background: #E46653;
+  }
+  100% {
+    background: #74C390;
+  }
+}
+@-webkit-keyframes background {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes background {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -2,13 +2,17 @@ import { useState, useEffect } from 'react';
 import Todo from './components/Todo';
 import AddTodoForm from './components/AddTodoForm';
 import EditTodoForm from './components/EditTodoForm';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import './App.css';
 
 function App() {
-	const [todos, setTodos] = useState([]);
+	const [todos, setTodos] = useState(
+		JSON.parse(localStorage.getItem('tasks')) ?? []
+	);
 	const [addTodoInputValue, setAddTodoInputValue] = useState('');
 	const [editTodoInputValue, setEditTodoInputValue] = useState({});
 	const [isEditMode, setIsEditMode] = useState(false);
+	const [parent, enableAnimations] = useAutoAnimate(/* optional config */);
 	const [quote, setQuote] = useState({ text: '', author: '' });
 
 	useEffect(() => {
@@ -23,6 +27,11 @@ function App() {
 			});
 	}, []);
 
+	useEffect(() => {
+		localStorage.setItem('tasks', JSON.stringify(todos));
+		console.log(localStorage.getItem('tasks'));
+	}, [todos]);
+
 	const addTodo = (e) => {
 		e.preventDefault();
 		setTodos([
@@ -36,6 +45,10 @@ function App() {
 		const newArray = [...todos];
 		newArray.splice(i, 1);
 		setTodos(newArray);
+	};
+
+	const deleteAllTodos = (i) => {
+		setTodos([]);
 	};
 
 	const editTodo = (id) => {
@@ -61,36 +74,45 @@ function App() {
 	};
 
 	return (
-		<>
-			<h1>My To Do List</h1>
+		<div className='app'>
+			<h1>Todo Today</h1>
 			<blockquote>
-				{quote.text} <br /> - {quote.author}{' '}
+				<span className='quote'>{quote.text}</span> <br />
+				{quote.author ? <span className='author'>{quote.author}</span> : null}
 			</blockquote>
-			{isEditMode ? (
-				<EditTodoForm
-					editTodoInputValue={editTodoInputValue}
-					setEditTodoInputValue={setEditTodoInputValue}
-					updateTodo={updateTodo}
-				/>
-			) : (
-				<AddTodoForm
-					addTodo={addTodo}
-					setAddTodoInputValue={setAddTodoInputValue}
-					addTodoInputValue={addTodoInputValue}
-				/>
-			)}
+			<AddTodoForm
+				addTodo={addTodo}
+				setAddTodoInputValue={setAddTodoInputValue}
+				addTodoInputValue={addTodoInputValue}
+			/>
+			<div className='todo-list' ref={parent}>
+				{todos.map((todo, i) =>
+					i === editTodoInputValue.todoId && isEditMode ? (
+						<EditTodoForm
+							key={i}
+							editTodoInputValue={editTodoInputValue}
+							setEditTodoInputValue={setEditTodoInputValue}
+							updateTodo={updateTodo}
+						/>
+					) : (
+						<Todo
+							key={i}
+							id={i}
+							todo={todo}
+							removeTodo={removeTodo}
+							editTodo={editTodo}
+							manageCheckTodo={manageCheckTodo}
+						/>
+					)
+				)}
+			</div>
 
-			{todos.map((todo, i) => (
-				<Todo
-					key={i}
-					id={i}
-					todo={todo}
-					removeTodo={removeTodo}
-					editTodo={editTodo}
-					manageCheckTodo={manageCheckTodo}
-				/>
-			))}
-		</>
+			{todos.length > 0 && (
+				<button className='btn-delete-all' onClick={() => deleteAllTodos()}>
+					DELETE ALL TODOS <i className='fi fi-rr-trash'></i>
+				</button>
+			)}
+		</div>
 	);
 }
 

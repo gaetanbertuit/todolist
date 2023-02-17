@@ -6,9 +6,12 @@ function EditTodoForm({
 	updateTodo,
 }) {
 	return (
-		<form onSubmit={(e) => updateTodo(e, editTodoInputValue.todoId)}>
+		<form
+			className='edit-todo-form'
+			onSubmit={(e) => updateTodo(e, editTodoInputValue.todoId)}>
 			<input
-				className='todo-input'
+				autoFocus
+				className='edit-todo-input'
 				placeholder='Edit Todo...'
 				value={editTodoInputValue.value}
 				onChange={(e) =>
@@ -17,9 +20,6 @@ function EditTodoForm({
 						value: e.target.value,
 					})
 				}></input>
-			<button className='btn-add-todo' type='submit'>
-				Update
-			</button>
 		</form>
 	);
 }
